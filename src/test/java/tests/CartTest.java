@@ -51,6 +51,45 @@ public class CartTest extends BaseTest {
 
 
     }
+    @Test(description = "Verify screenshot capture on failed cart case ", dataProvider = "productData")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Validates item name, unit price, quantity, and subtotal calculation in the cart.")
+
+    public void negativeAddToCartTest(ProductTestData data) {
+        HomePage home = new HomePage(getDriver());
+        TodayPage today = new TodayPage(getDriver());
+        ItemPage itemPage = new ItemPage(getDriver());
+        CartPage cartPage = new CartPage(getDriver());
+
+        home.goToDeals();
+        today.chooseCategoryByIndex(data.getCategoryIndex());
+        today.selectProductByIndex(data.getProductIndex());
+
+        itemPage.selectVariationByIndex(data.getVariationIndex());
+        itemPage.selectQuantity(String.valueOf(data.getQuantity()));
+
+
+        String expectedName = itemPage.getItemName();
+        double unitPrice = parseCurrency(itemPage.getItemPrice());
+
+        itemPage.addToCart();
+        itemPage.declineWarrantyIfPresent();
+        itemPage.goToCart();
+
+        String actualName = cartPage.getProductName();
+        double actualPrice = parseCurrency(cartPage.getPrice());
+        int actualQty = Integer.parseInt(cartPage.getQuantity().trim());
+        double actualSubtotal = parseCurrency(cartPage.getSubtotal());
+
+        cartPage.compareProductNames(expectedName, actualName);
+
+        cartPage.comparePrice(unitPrice, actualPrice);
+        cartPage.compareQuantity(data.getQuantity(), 99);
+        cartPage.verifySubtotal(unitPrice, actualQty, actualSubtotal);
+
+
+    }
+
 
 
     private double parseCurrency(String priceText) {
