@@ -30,7 +30,8 @@ The framework maintains a strict separation between test logic and UI-specific l
 To execute the automation suite and view the interactive results, follow these steps in your terminal:
 
 ### Execute and Report
-1. **Run Tests:** Execute the command to clean the environment and run the TestNG suite.
+1. **Run Tests:** Execute the command to clean the environment and run the TestNG suite and can also configure the test
+through data provider inside test case in cart cases.
 2. **View Report:** Follow up with the Allure command to launch the visual dashboard.
 
 ```bash
@@ -38,4 +39,4 @@ To execute the automation suite and view the interactive results, follow these s
 mvn clean test
 
 # Generate and serve the Allure report
-allure serve test-outputs/allure-results
+allure serve target/allure-results
