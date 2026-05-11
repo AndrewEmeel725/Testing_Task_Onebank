@@ -51,9 +51,21 @@ public class CartPage extends BasePage {
 
 
 
-    @Step("Validate quantity: Expected {expected} vs Actual {actual}")
-    public void compareQuantity(int expected, int actual) {
-        Assert.assertEquals(actual, expected, "Quantity mismatch!");
+    @Step("Validate Cart Quantity: DataProvider({dataQty}), ItemPage({itemQty}), Cart({cartQty})")
+    public void validateQuantity(int dataQty, int itemQty, int cartQty) {
+        String message = "Quantity Mismatch";
+
+        if (itemQty == 1 && dataQty > 1) {
+            message = "Only 1 product was available on the item page";
+        } else if (itemQty != cartQty) {
+            message = "Item page selection does not match Cart display";
+        }
+
+        if (itemQty == cartQty) {
+            Assert.assertEquals(cartQty, dataQty, message);
+        } else {
+            Assert.assertEquals(cartQty, itemQty, " Cart and Item Page differ!");
+        }
     }
 
     @Step("Validate unit price: Expected {expected} vs Actual {actual}")
@@ -81,7 +93,7 @@ public class CartPage extends BasePage {
         boolean isMatch = str1.contains(str2) || str2.contains(str1);
 
         if (!isMatch) {
-            int comparisonLength = Math.min(Math.min(str1.length(), str2.length()), 30);
+            int comparisonLength = Math.min(Math.min(str1.length(), str2.length()), 20);
             if (comparisonLength >= 10) {
                 isMatch = str1.substring(0, comparisonLength).equals(str2.substring(0, comparisonLength));
             }

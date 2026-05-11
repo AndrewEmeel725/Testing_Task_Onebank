@@ -17,13 +17,12 @@ public class ItemPage extends BasePage {
     By addBtn = By.id("add-to-cart-button");
     By qtyTrigger = By.cssSelector("select[name='quantity'], #selectQuantity, #a-autoid-0-announce");
     By cart = By.id("sw-gtc");
-     private String secondAvailableSwatchLocator = "(//li[@data-csa-c-content-id='twister-desktop-twister-swatch-swatchAvailable'])[%d]";
+    private String secondAvailableSwatchLocator = "(//li[@data-csa-c-content-id='twister-desktop-twister-swatch-swatchAvailable'])[%d]";
 
 
     public ItemPage(WebDriver driver) {
         super(driver);
     }
-
 
 
     @Step("Add item to cart with verification")
@@ -37,9 +36,7 @@ public class ItemPage extends BasePage {
             wait.until(ExpectedConditions.elementToBeClickable(addBtn)).click();
             System.out.println("Add to cart button clicked normally");
 
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
 
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView(true);", addToCartButton);
@@ -93,8 +90,7 @@ public class ItemPage extends BasePage {
             System.out.println("Variation Pressed using normal press");
         } catch (TimeoutException e) {
             System.out.println("Variation not available for that item");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             try {
                 WebElement swatchElement = driver.findElement(dynamicSwatch);
                 JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -105,8 +101,9 @@ public class ItemPage extends BasePage {
             }
         }
     }
+
     @Step("Select quantity from dropdown with dynamic locator construction and robust waiting")
-    public void selectQuantity(String qtyValue1) {
+    public int selectQuantity(String qtyValue1) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Actions actions = new Actions(driver);
 
@@ -142,11 +139,16 @@ public class ItemPage extends BasePage {
         } catch (TimeoutException e) {
 
             System.out.println("SKIPPING: Quantity dropdown not found or not clickable for this item.");
+            return 1;
 
         } catch (Exception e) {
             System.out.println("An unexpected error occurred in selectQuantity1: " + e.getMessage());
+            return 1;
         }
+
+        return Integer.parseInt(qtyValue1);
     }
+
 
     @Step("Force-close warranty pop-up with frame check and retry loop")
     public void declineWarrantyIfPresent() {

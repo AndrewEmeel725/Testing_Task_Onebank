@@ -28,7 +28,7 @@ public class CartTest extends BaseTest {
         today.selectProductByIndex(data.getProductIndex());
 
         itemPage.selectVariationByIndex(data.getVariationIndex());
-        itemPage.selectQuantity(String.valueOf(data.getQuantity()));
+        int selectedQty=itemPage.selectQuantity(String.valueOf(data.getQuantity()));
 
 
         String expectedName = itemPage.getItemName();
@@ -46,7 +46,7 @@ public class CartTest extends BaseTest {
         cartPage.compareProductNames(expectedName, actualName);
 
         cartPage.comparePrice(unitPrice, actualPrice);
-        cartPage.compareQuantity(data.getQuantity(), actualQty);
+        cartPage.validateQuantity(data.getQuantity(),selectedQty,actualQty);
         cartPage.verifySubtotal(unitPrice, actualQty, actualSubtotal);
 
 
@@ -66,7 +66,8 @@ public class CartTest extends BaseTest {
         today.selectProductByIndex(data.getProductIndex());
 
         itemPage.selectVariationByIndex(data.getVariationIndex());
-        itemPage.selectQuantity(String.valueOf(data.getQuantity()));
+        int selectedQty=itemPage.selectQuantity(String.valueOf(data.getQuantity()));
+
 
 
         String expectedName = itemPage.getItemName();
@@ -84,7 +85,7 @@ public class CartTest extends BaseTest {
         cartPage.compareProductNames(expectedName, actualName);
 
         cartPage.comparePrice(unitPrice, actualPrice);
-        cartPage.compareQuantity(data.getQuantity(), 99);
+        cartPage.validateQuantity(data.getQuantity(),selectedQty,99);
         cartPage.verifySubtotal(unitPrice, actualQty, actualSubtotal);
 
 
